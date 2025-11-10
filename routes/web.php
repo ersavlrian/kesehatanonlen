@@ -24,6 +24,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware('admin')->group(function () {
      Route::get('/category', [AdminController::class, 'Category'])->name('admin.category');
      Route::post('/category', [AdminController::class, 'postCategory'])->name('admin.postcategory');
+     Route::delete('/admin.category/{id}', [AdminController::class, 'deleteCategory'])->name('deletecategory');
+
 });
 
 Route::get('/admin/category/view', function () {

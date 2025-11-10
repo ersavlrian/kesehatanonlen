@@ -36,12 +36,19 @@
             </div>
 
             <!-- Add Category Form -->
+            @if(session('category_message'))
+                <div class="mb-4 p-3 rounded-lg bg-green-100 text-green-700 border border-green-300">
+                  {{ session('category_message') }}
+                 </div>
+            @endif
+
             <div class="bg-white p-6 rounded-xl shadow mb-6">
                 <h3 class="text-lg font-semibold mb-4 text-gray-700">➕ Tambah Kategori</h3>
                 <form action="{{ route('admin.postcategory') }}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @csrf
                     <div>
                         <label class="block text-gray-600 mb-2">Nama Kategori</label>
-                        <input type="text" name="category_name" class="w-full p-2 border rounded-lg focus:ring focus:ring-indigo-200" placeholder="Masukkan nama kategori">
+                        <input type="text" name="category" class="w-full p-2 border rounded-lg focus:ring focus:ring-indigo-200" placeholder="Masukkan nama kategori">
                     </div>
                     <div class="flex items-end">
                         <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
@@ -51,37 +58,43 @@
                 </form>
             </div>
 
-            <!-- Category List -->
-            <div class="bg-white p-6 rounded-xl shadow">
-                <h3 class="text-lg font-semibold mb-4 text-gray-700">📋 Daftar Kategori</h3>
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-gray-50 border-b">
-                            <th class="p-3 text-gray-600">#</th>
-                            <th class="p-3 text-gray-600">Nama Kategori</th>
-                            <th class="p-3 text-gray-600">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b hover:bg-gray-50">
-                            <td class="p-3">1</td>
-                            <td class="p-3">Elektronik</td>
-                            <td class="p-3">
-                                <button class="text-blue-600 hover:underline">Edit</button> |
-                                <button class="text-red-600 hover:underline">Hapus</button>
-                            </td>
-                        </tr>
-                        <tr class="border-b hover:bg-gray-50">
-                            <td class="p-3">2</td>
-                            <td class="p-3">Fashion</td>
-                            <td class="p-3">
-                                <button class="text-blue-600 hover:underline">Edit</button> |
-                                <button class="text-red-600 hover:underline">Hapus</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+<!-- View Category Table -->
+<div class="bg-white p-6 rounded-xl shadow mb-6">
+    <h3 class="text-lg font-semibold mb-4 text-gray-700">📂 Daftar Kategori</h3>
+
+    <table class="w-full text-left border-collapse">
+        <thead>
+            <tr class="bg-gray-50 border-b">
+                <th class="p-3 text-gray-600">id</th>
+                <th class="p-3 text-gray-600">Nama Kategori</th>
+                <th class="p-3 text-gray-600 text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($categories as $index => $category)
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="p-3">{{ $category->id }}</td>
+                    <td class="p-3">{{ $category->category }}</td>
+                    <td class="p-3 text-center">
+                    <form action="{{ route('deletecategory', $category->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
+                            Hapus
+                        </button>
+                    </form>
+                </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="3" class="p-3 text-center text-gray-500">Belum ada kategori.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
+
+
         </main>
     </div>
 </body>
