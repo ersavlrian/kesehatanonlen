@@ -8,214 +8,214 @@
 </head>
 <body class="bg-gray-100 font-sans">
 
-    <div class="min-h-screen flex">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-white shadow-lg">
-            <div class="p-6 border-b">
-                <h1 class="text-2xl font-bold text-indigo-600">ShopAdmin</h1>
-            </div>
-            <nav class="p-4">
-                <ul class="space-y-2 text-gray-700">
-                    <li><a href="/admin/dashboard" class="flex items-center p-2 rounded-lg hover:bg-indigo-100"><span class="ml-2">🏠 Dashboard</span></a></li>
-                    <li><a href="/admin/products" class="flex items-center p-2 rounded-lg bg-indigo-100 text-indigo-700"><span class="ml-2">📦 Produk</span></a></li>
-                </ul>
-            </nav>
-        </aside>
+<div class="min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-lg">
+        <div class="p-6 border-b">
+            <h1 class="text-2xl font-bold text-indigo-600">ShopAdmin</h1>
+        </div>
+        <nav class="p-4">
+            <ul class="space-y-2 text-gray-700">
+                <li>
+                    <a href="dashboard" class="flex items-center p-2 rounded-lg hover:bg-indigo-100">
+                        <span class="ml-2">🏠 Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/products" class="flex items-center p-2 rounded-lg bg-indigo-100 text-indigo-700">
+                        <span class="ml-2">📦 Produk</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
 
-        <!-- Main Content -->
-        <main class="flex-1 p-8">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-3xl font-semibold text-gray-800">Kelola Produk</h2>
-                <button onclick="openAddModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
-                    + Tambah Produk
-                </button>
-            </div>
+    <!-- Main Content -->
+    <main class="flex-1 p-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-3xl font-semibold text-gray-800">Kelola Produk</h2>
+        </div>
 
-            <!-- Filter Kategori -->
-            <div class="mb-4 flex items-center space-x-3">
+        <!-- Filter dan Tombol Tambah -->
+        <div class="mb-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
                 <label for="categoryFilter" class="text-gray-700 font-medium">Filter Kategori:</label>
                 <select id="categoryFilter" onchange="filterByCategory()" class="border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-100">
                     <option value="all">Semua Kategori</option>
-                    <option value="sepatu">Sepatu</option>
-                    <option value="tas">Tas</option>
-                    <option value="jam">Jam</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ strtolower($category->category) }}">{{ $category->category }}</option>
+                    @endforeach
                 </select>
             </div>
 
-            <!-- Table -->
-            <div class="bg-white p-6 rounded-xl shadow">
-                <table class="w-full border-collapse text-left">
-                    <thead>
-                        <tr class="bg-gray-50 border-b">
-                            <th class="p-3 text-gray-600">#</th>
-                            <th class="p-3 text-gray-600">Foto</th>
-                            <th class="p-3 text-gray-600">Nama Produk</th>
-                            <th class="p-3 text-gray-600">Kategori</th>
-                            <th class="p-3 text-gray-600">Harga</th>
-                            <th class="p-3 text-gray-600">Stok</th>
-                            <th class="p-3 text-gray-600">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="productTable">
-                        <tr data-category="sepatu" class="border-b hover:bg-gray-50">
-                            <td class="p-3">1</td>
-                            <td class="p-3"><img src="https://via.placeholder.com/60" class="w-14 h-14 object-cover rounded"></td>
-                            <td class="p-3">Sepatu Sport</td>
-                            <td class="p-3">Sepatu</td>
-                            <td class="p-3">Rp 650.000</td>
-                            <td class="p-3">25</td>
-                            <td class="p-3 space-x-2">
-                                <button onclick="openEditModal(1)" class="text-blue-600 hover:underline">Edit</button>
-                                <button onclick="deleteProduct(1)" class="text-red-600 hover:underline">Hapus</button>
-                            </td>
-                        </tr>
-                        <tr data-category="tas" class="border-b hover:bg-gray-50">
-                            <td class="p-3">2</td>
-                            <td class="p-3"><img src="https://via.placeholder.com/60" class="w-14 h-14 object-cover rounded"></td>
-                            <td class="p-3">Tas Kulit</td>
-                            <td class="p-3">Tas</td>
-                            <td class="p-3">Rp 420.000</td>
-                            <td class="p-3">10</td>
-                            <td class="p-3 space-x-2">
-                                <button onclick="openEditModal(2)" class="text-blue-600 hover:underline">Edit</button>
-                                <button onclick="deleteProduct(2)" class="text-red-600 hover:underline">Hapus</button>
-                            </td>
-                        </tr>
-                        <tr data-category="jam" class="border-b hover:bg-gray-50">
-                            <td class="p-3">3</td>
-                            <td class="p-3"><img src="https://via.placeholder.com/60" class="w-14 h-14 object-cover rounded"></td>
-                            <td class="p-3">Jam Tangan</td>
-                            <td class="p-3">Jam</td>
-                            <td class="p-3">Rp 890.000</td>
-                            <td class="p-3">15</td>
-                            <td class="p-3 space-x-2">
-                                <button onclick="openEditModal(3)" class="text-blue-600 hover:underline">Edit</button>
-                                <button onclick="deleteProduct(3)" class="text-red-600 hover:underline">Hapus</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </main>
-    </div>
-
-    <!-- Modal: Tambah/Edit Produk -->
-    <div id="productModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
-        <div class="bg-white p-6 rounded-xl shadow-lg w-96 relative">
-            <h3 id="modalTitle" class="text-xl font-semibold mb-4 text-gray-800">Tambah Produk</h3>
-            <form id="productForm" onsubmit="saveProduct(event)">
-                <input type="hidden" id="productId">
-
-                <div class="mb-3">
-                    <label class="block text-gray-600 text-sm mb-1">Nama Produk</label>
-                    <input id="productName" type="text" required class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-100">
-                </div>
-
-                <div class="mb-3">
-                    <label class="block text-gray-600 text-sm mb-1">Kategori</label>
-                    <select id="productCategory" required class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-100">
-                        <option value="">Pilih Kategori</option>
-                        <option value="sepatu">Sepatu</option>
-                        <option value="tas">Tas</option>
-                        <option value="jam">Jam</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label class="block text-gray-600 text-sm mb-1">Harga</label>
-                    <input id="productPrice" type="number" required class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-100">
-                </div>
-
-                <div class="mb-3">
-                    <label class="block text-gray-600 text-sm mb-1">Stok</label>
-                    <input id="productStock" type="number" required class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-100">
-                </div>
-
-                <!-- Upload Foto -->
-                <div class="mb-3">
-                    <label class="block text-gray-600 text-sm mb-1">Foto Produk</label>
-                    <input id="productImage" type="file" accept="image/*" onchange="previewImage(event)" class="w-full border rounded-lg px-3 py-2">
-                    <img id="imagePreview" class="mt-3 w-32 h-32 object-cover rounded hidden" alt="Preview">
-                </div>
-
-                <div class="flex justify-end space-x-2 mt-4">
-                    <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300">Batal</button>
-                    <button type="submit" class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">Simpan</button>
-                </div>
-            </form>
+            <button onclick="openAddModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+                + Tambah Produk
+            </button>
         </div>
+
+        <!-- Table Produk -->
+        <div class="bg-white p-6 rounded-xl shadow">
+            <table id="productTable" class="w-full border-collapse text-left">
+                <thead>
+                    <tr class="bg-gray-50 border-b">
+                        <th class="p-3 text-gray-600">#</th>
+                        <th class="p-3 text-gray-600">Foto</th>
+                        <th class="p-3 text-gray-600">Nama Produk</th>
+                        <th class="p-3 text-gray-600">Kategori</th>
+                        <th class="p-3 text-gray-600">Deskripsi</th>
+                        <th class="p-3 text-gray-600">Harga</th>
+                        <th class="p-3 text-gray-600">Stok</th>
+                        <th class="p-3 text-gray-600">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($products as $index => $product)
+                        <tr data-category="{{ strtolower($product->category->category ?? '') }}" class="border-b hover:bg-gray-50">
+                            <td class="p-3">{{ $index + 1 }}</td>
+                            <td class="p-3">
+                                @if ($product->image)
+                                    <img src="{{ asset('storage/'.$product->image) }}" class="w-14 h-14 object-cover rounded">
+                                @else
+                                    <span class="text-gray-400 italic">Tidak ada</span>
+                                @endif
+                            </td>
+                            <td class="p-3">{{ $product->name }}</td>
+                            <td class="p-3">{{ $product->category->category ?? '-' }}</td>
+                            <td class="p-3">{{ \Illuminate\Support\Str::limit($product->description, 50) }}</td>
+                            <td class="p-3">Rp {{ number_format($product->price, 0, ',', '.') }}</td>
+                            <td class="p-3">{{ $product->stock }}</td>
+                            <td class="p-3 space-x-2">
+                                <button 
+                                    onclick="openEditModal({{ $product->id }}, '{{ addslashes($product->name) }}', '{{ $product->category_id }}', '{{ $product->price }}', '{{ $product->stock }}', '{{ addslashes($product->description) }}')" 
+                                    class="text-blue-600 hover:underline">Edit</button>
+
+                                <form action="{{ route('deleteproduct', $product->id) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:underline">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center p-4 text-gray-500">Belum ada produk.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
+            <div class="mt-4">
+                {{ $products->links() }}
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Modal Tambah/Edit Produk -->
+<div id="productModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center">
+    <div class="bg-white p-6 rounded-xl shadow-lg w-96 relative">
+        <h3 id="modalTitle" class="text-xl font-semibold mb-4 text-gray-800">Tambah Produk</h3>
+
+        <form id="productForm" method="POST" enctype="multipart/form-data" class="space-y-4">
+            @csrf
+            <input type="hidden" name="_method" id="formMethod" value="POST">
+
+            <div>
+                <label class="block font-medium">Nama Produk</label>
+                <input type="text" name="name" id="name" class="border rounded w-full p-2" required>
+            </div>
+
+            <div>
+                <label class="block font-medium">Kategori</label>
+                <select name="category_id" id="category_id" class="border rounded w-full p-2" required>
+                    <option value="">-- Pilih Kategori --</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->category }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
+                <label class="block font-medium">Harga</label>
+                <input type="number" name="price" id="price" class="border rounded w-full p-2" required>
+            </div>
+
+            <div>
+                <label class="block font-medium">Stok</label>
+                <input type="number" name="stock" id="stock" class="border rounded w-full p-2" required>
+            </div>
+
+            <div>
+                <label class="block font-medium">Deskripsi Produk</label>
+                <textarea name="description" id="description" class="border rounded w-full p-2" rows="3"></textarea>
+            </div>
+
+            <div>
+                <label class="block font-medium">Gambar Produk</label>
+                <input type="file" name="image" accept="image/*" class="border rounded w-full p-2">
+            </div>
+
+            <div class="flex justify-end space-x-2">
+                <button type="button" onclick="closeModal()" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">
+                    Batal
+                </button>
+                <button type="submit" id="submitButton" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                    Tambah Produk
+                </button>
+            </div>
+        </form>
     </div>
+</div>
 
-    <script>
-        function openAddModal() {
-            document.getElementById("modalTitle").textContent = "Tambah Produk";
-            document.getElementById("productForm").reset();
-            document.getElementById("productId").value = "";
-            document.getElementById("imagePreview").classList.add("hidden");
-            document.getElementById("productModal").classList.remove("hidden");
-            document.getElementById("productModal").classList.add("flex");
-        }
+<!-- Script -->
+<script>
+    const modal = document.getElementById("productModal");
+    const form = document.getElementById("productForm");
+    const modalTitle = document.getElementById("modalTitle");
+    const submitButton = document.getElementById("submitButton");
 
-        function openEditModal(id) {
-            document.getElementById("modalTitle").textContent = "Edit Produk";
-            document.getElementById("productId").value = id;
-            document.getElementById("productName").value = "Produk Contoh " + id;
-            document.getElementById("productCategory").value = "tas";
-            document.getElementById("productPrice").value = 500000;
-            document.getElementById("productStock").value = 20;
-            document.getElementById("imagePreview").src = "https://via.placeholder.com/100";
-            document.getElementById("imagePreview").classList.remove("hidden");
-            document.getElementById("productModal").classList.remove("hidden");
-            document.getElementById("productModal").classList.add("flex");
-        }
+    function openAddModal() {
+        form.reset();
+        form.action = "{{ route('addproduct') }}";
+        document.getElementById("formMethod").value = "POST";
+        modalTitle.textContent = "Tambah Produk";
+        submitButton.textContent = "Tambah Produk";
 
-        function previewImage(event) {
-            const reader = new FileReader();
-            reader.onload = function(){
-                const output = document.getElementById('imagePreview');
-                output.src = reader.result;
-                output.classList.remove("hidden");
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+    }
 
-        function closeModal() {
-            document.getElementById("productModal").classList.add("hidden");
-        }
+    function openEditModal(id, name, category_id, price, stock, description) {
+        form.action = "product/update/" + id;
+        document.getElementById("formMethod").value = "PUT";
+        modalTitle.textContent = "Edit Produk";
+        submitButton.textContent = "Simpan Perubahan";
 
-        function saveProduct(e) {
-            e.preventDefault();
-            const id = document.getElementById("productId").value;
-            const name = document.getElementById("productName").value;
-            const price = document.getElementById("productPrice").value;
-            const stock = document.getElementById("productStock").value;
-            const category = document.getElementById("productCategory").value;
+        document.getElementById("name").value = name;
+        document.getElementById("category_id").value = category_id;
+        document.getElementById("price").value = price;
+        document.getElementById("stock").value = stock;
+        document.getElementById("description").value = description;
 
-            if (id) {
-                alert(`Produk ${id} diperbarui: ${name}, Kategori: ${category}, Rp ${price}, stok ${stock}`);
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+    }
+
+    function closeModal() {
+        modal.classList.add("hidden");
+    }
+
+    function filterByCategory() {
+        const filter = document.getElementById("categoryFilter").value;
+        const rows = document.querySelectorAll("#productTable tbody tr");
+        rows.forEach(row => {
+            if (filter === "all" || row.dataset.category === filter) {
+                row.style.display = "";
             } else {
-                alert(`Produk baru ditambahkan: ${name}, Kategori: ${category}, Rp ${price}, stok ${stock}`);
+                row.style.display = "none";
             }
-            closeModal();
-        }
-
-        function deleteProduct(id) {
-            if (confirm(`Hapus produk dengan ID ${id}?`)) {
-                alert("Produk berhasil dihapus!");
-            }
-        }
-
-        function filterByCategory() {
-            const filter = document.getElementById("categoryFilter").value;
-            const rows = document.querySelectorAll("#productTable tr");
-            rows.forEach(row => {
-                if (filter === "all" || row.dataset.category === filter) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
-            });
-        }
-    </script>
+        });
+    }
+</script>
 </body>
 </html>
